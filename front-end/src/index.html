@@ -1,7 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Facebook Messenger - By James Harris</title>
+
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/normalize.css">
+
+
+</head>
+
 <body>
-  <div id="app">
-    {{ working }}
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  <script src="./js/app.js"></script>
+    <div id="app" class="wrapper">
+        <main>
+            <div class="col">
+                <div class="wrapper-mobile">
+                  <div class="mobile"><img src="./img/lone-logo.svg">Not available</div>
+                </div>
+                <div id="msg" class="col-content" >
+                  <section ref="chat" class="message" style="overflow-y: scroll;">
+                      <div style="width: 100%;margin-bottom: 50px;" v-html="print">
+
+                      </div>
+                  </section>
+
+                </div>
+
+
+                <div class="col-foot">
+
+                    <div class="compose">
+
+                        <input ref="input" v-model="typemsg" placeholder="Type a message" v-on:keyup.enter="sendmsg()">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-right right-second">
+
+                <div class="col-content">
+
+                    <div class="user-panel">
+
+                        <div class="avatar">
+                            <div class="avatar-image">
+                                <div v-bind:class="{online: currentDest.online, offline: !currentDest.online}" class="status"></div>
+                                <img v-bind:src="currentDest.img">
+                            </div>
+                            <h3>{{ currentDest.name }}</h3>
+                            <p>{{ currentDest.desc }}</p>
+                        </div>
+
+                    </div>
+                    <div class="messages">
+                        <li v-for="user in users" v-if="user != currentDest" class="dest" v-on:click="switchdest(user.psd)">
+                            <div class="avatar">
+                                <div class="avatar-image">
+                                    <div v-bind:class="{online: user.online, offline: !user.online}" class="status"></div>
+                                    <img v-bind:src="user.img">
+                                </div>
+                            </div>
+                            <h3>{{ user.name }}</h3>
+                            <p>{{ user.desc }}</p>
+                        </li>
+                   </div>
+
+                </div>
+
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="./js/app.js"></script>
 </body>
+
+</html>
