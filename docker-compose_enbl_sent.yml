@@ -11,7 +11,7 @@ services:
             - PROD=1
           volumes:
             - ./DialogFlowSentimentAnalyser/:/home/api/DialogFlowSentimentAnalyser/
-            - ./DialogFlowSentimentAnalyser/GOOGLE_APPLICATION_CREDENTIALS.json.json:/home/api/secret.json
+            - ./DialogFlowSentimentAnalyser/GOOGLE_APPLICATION_CREDENTIALS.json:/home/api/secret.json
 
         msgr-bck-end:
           build: ./DialogFlowMessenger/back-end
