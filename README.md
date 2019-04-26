@@ -35,7 +35,7 @@ Route| Method| Content Type |Parameters| Description |
 ```
 
 **Warning**: 
-  * the `token` parameter is changed every new call
+  * the `token` parameter is changed every new call **if sentiment api is enabled**
   * the first part (before the `_`) should'nt change, if it does change report bug
 
 ### Launching the App:  
