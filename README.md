@@ -57,7 +57,7 @@ To enable sentiment analysis:
 
 You can now:
 
-* _ping the Mesenger's API using `localhost:5001` _
-* _ping the Sentiments's API using `localhost:5000` _
+* *ping the Mesenger's API using `localhost:5001`*
+* *ping the Sentiments's API using `localhost:5000`*
 
 And Sentiment analysis is included in the Messenger's API response
