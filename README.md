@@ -1,4 +1,4 @@
-# Sentiments analyser app
+# Messenger like & DialogFlow app ( w/ sentiment analysis)
 ---
 
 # The App:
