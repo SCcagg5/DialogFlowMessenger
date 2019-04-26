@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+        sent-bck-end:
+          build: ./DialogFlowSentimentAnalyser/back-end
+          ports:
+            - 5000:8080
+          tty: true
+          stdin_open: true
+          environment:
+            - PROD=1
+          volumes:
+            - ./DialogFlowSentimentAnalyser/:/home/api/DialogFlowSentimentAnalyser/
+            - ./DialogFlowSentimentAnalyser/GOOGLE_APPLICATION_CREDENTIALS.json.json:/home/api/secret.json
+
+        msgr-bck-end:
+          build: ./DialogFlowMessenger/back-end
+          ports:
+            - 5001:8080
+          tty: true
+          stdin_open: true
+          environment:
+            - PROD=1
+          volumes:
+            - ./DialogFlowMessenger:/home/api/DialogFlowMessenger
+          links:
+            - sent-bck-end:dialogflow_sentiment_api
