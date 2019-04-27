@@ -28,8 +28,7 @@ def base():
     toret = ret(request.route.rule, params)
     return toret.ret()
 
-@app.post('/talk/')
-@app.get('/talk/')
+@app.route('/talk/', method=['OPTIONS', 'POST'])
 def base():
     if request.method == 'OPTIONS':
         return {}
