@@ -108,7 +108,8 @@ new Vue({
           this.$refs.input.focus()
         this.switchdest("bot")
       } else {
-        this.sendmsgdest("bot", "bonjour");
+        this.adddestmsg("bottest", "Bonjour ! Je suis la pour tester ce système, tu peux me parler de tout et de rien");
+        this.adddestmsg("bot", "Salut ! Je suis la pour t’assister dans ton apprentissage de DialogFlow, n’hésite pas a me poser des questions");
         this.switchdest("bot")
       }
 
