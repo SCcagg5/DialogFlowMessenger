@@ -18,14 +18,14 @@ new Vue({
       adddestmsg: function(dest, text){
         if (this.conv[dest] == void 0)
           this.conv[dest] = [];
-        this.conv[dest].push({"msg": text, "user": "user"});
+        this.conv[dest].push({"msg": text, "user": "dest"});
         message = '<div class="col-message-received"><div class="message-received"><p>'+text+'</p></div></div>'
         this.addhtmlmsg(dest, message);
       },
       addusermsg: function(dest, text){
         if (this.conv[dest] == void 0)
           this.conv[dest] = [];
-        this.conv[dest].push({"msg": text, "user": "dest"});
+        this.conv[dest].push({"msg": text, "user": "user"});
         message = '<div class="col-message-sent"><div class="message-sent"><p>'+text+'</p></div></div>';
         this.addhtmlmsg(dest, message);
       },

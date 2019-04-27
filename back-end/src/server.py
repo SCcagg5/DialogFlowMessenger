@@ -7,6 +7,16 @@ from analyse import sentiment
 import uuid
 import os
 
+@app.hook('after_request')
+def enable_cors():
+    """
+    You need to add some headers to each request.
+    Don't use the wildcard '*' for Access-Control-Allow-Origin in production.
+    """
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
 """route to test if api is up"""
 @get('/test/')
 @post('/test/')
@@ -19,7 +29,10 @@ def base():
     return toret.ret()
 
 @post('/talk/')
+@get('/talk/')
 def base():
+    if request.method == 'OPTIONS':
+        return {}
     try:
         params = check.json(request)
     except:
