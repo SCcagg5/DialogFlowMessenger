@@ -1,10 +1,8 @@
 from bottle import run, route, get, post, response, request, hook
-import time
 from returnvalue import ret
 from params import check
 from dialogflow import dialogflowapi
 from analyse import sentiment
-import uuid
 import os
 
 @app.hook('after_request')
