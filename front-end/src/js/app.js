@@ -63,7 +63,7 @@ new Vue({
           "lang": this.lang,
           "bearer": bearer
         }
-        url = "http://localhost:5000/talk/"
+        url = "http://eliotctl.fr:5000/talk/"
         axios.post(url, data)
              .then(response => {this.formatbotresp(dest, response)})
              .catch(error => console.log(error));
