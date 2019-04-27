@@ -146,8 +146,8 @@ new Vue({
         this.lang = localStorage.lang;
         this.loadtoken(localStorage.token);
         if (this.typemsg != "")
-          this.$refs.input.focus()
-        this.switchdest(this.currentDest.name)
+            this.$refs.input.focus();
+	  this.print = this.rawMessages[this.currentDest.psd];
       } else {
         this.adddestmsg("bottest", "Bonjour ! Je suis la pour tester ce système, tu peux me parler de tout et de rien");
         this.adddestmsg("bot", "Salut ! Je suis la pour t’assister dans ton apprentissage de DialogFlow, n’hésite pas a me poser des questions");
