@@ -3,8 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Majordome DialogFlowMessenger</title><-- James Harris -->
-
+    <title>Majordome DialogFlowMessenger</title>
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/normalize.css">
@@ -70,7 +69,7 @@
 
                     </div>
                     <div class="messages">
-                        <li v-for="user in users" v-if="user != currentDest" class="dest" v-on:click="switchdest(user.psd)">
+                        <li v-for="user in users" v-if="user.name != currentDest.name" class="dest" v-on:click="switchdest(user.psd)">
                             <div class="avatar">
                                 <div class="avatar-image">
                                     <div v-bind:class="{online: user.online, offline: !user.online}" class="status"></div>

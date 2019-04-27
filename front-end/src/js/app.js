@@ -74,7 +74,7 @@ new Vue({
           "lang": this.lang,
           "bearer": bearer
         }
-        url = "http://localhost:5000/talk/"
+        url = "https://eliotctl.fr/api/dialogflowmessenger/talk/"
         axios.post(url, data)
              .then(response => {this.formatbotresp(dest, response)})
              .catch(error => console.log(error));
@@ -147,7 +147,7 @@ new Vue({
         this.loadtoken(localStorage.token);
         if (this.typemsg != "")
           this.$refs.input.focus()
-        this.switchdest("bot")
+        this.switchdest(this.currentDest.name)
       } else {
         this.adddestmsg("bottest", "Bonjour ! Je suis la pour tester ce système, tu peux me parler de tout et de rien");
         this.adddestmsg("bot", "Salut ! Je suis la pour t’assister dans ton apprentissage de DialogFlow, n’hésite pas a me poser des questions");
