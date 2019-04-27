@@ -4,7 +4,7 @@ services:
         sent-bck-end:
           build: ./DialogFlowSentimentAnalyser/back-end
           ports:
-            - 5000:8080
+            - 5001:8080
           tty: true
           stdin_open: true
           environment:
@@ -16,7 +16,7 @@ services:
         msgr-bck-end:
           build: ./DialogFlowMessenger/back-end
           ports:
-            - 5001:8080
+            - 5000:8080
           tty: true
           stdin_open: true
           environment:
@@ -25,3 +25,12 @@ services:
             - ./DialogFlowMessenger:/home/api/DialogFlowMessenger
           links:
             - sent-bck-end:dialogflow_sentiment_api
+
+        frt-end:
+          build: ./DialogFlowMessenger/front-end
+          ports:
+            - 80:8080
+          environment:
+            - PROD=1
+          volumes:
+            - ./DialogFlowMessenger/:/home/front/DialogFlowMessenger

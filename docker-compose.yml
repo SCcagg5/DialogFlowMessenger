@@ -17,6 +17,6 @@ services:
           ports:
             - 80:8080
           environment:
-            - PROD=1
+            - PROD=0
           volumes:
             - ./:/home/front/DialogFlowMessenger
