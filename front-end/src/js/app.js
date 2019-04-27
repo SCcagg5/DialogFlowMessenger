@@ -1,17 +1,29 @@
 new Vue({
     el: '#app',
     data: {
+       ajaxRequest: false,
        rawMessages: {},
        conv: {},
        currentDest: {"online": false, "img": "", "name": "", "desc": "", "psd": ""},
        print: '',
-       users: {"bot": {"online": true, "img": "./img/avatar.png", "name": "DialogFlow Helper", "desc": "Here to help you !", "psd": "bot"},
-               "center": {"online": false, "img": "./img/avatar-2.png", "name": "Help Center", "desc": "Be there soon.", "psd": "center"}},
-       typemsg: ""
+       users: {"bot": {"online": true, "img": "./img/avatar.png", "name": "DialogFlow Helper", "desc": "Here to help you !", "psd": "bot", "func": "bot", "bearer": "580132fb72ca4f7d85d41fbd63f2f498"},
+                "bottest": {"online": true, "img": "./img/avatar.png", "name": "Talker", "desc": "Here to talk !", "psd": "bottest", "func": "bot", "bearer": "54bda7f79cb348fa9039fdcbc9bf47f1"},
+               "center": {"online": false, "img": "./img/avatar-2.png", "name": "Help Center", "desc": "Be there soon.", "psd": "center", "func": "human"}},
+       typemsg: "",
+       token: '',
+       lang: "fr",
+       langue: "Francais",
+       langues: {"fr": [{"langue": "Francais", "lang": "fr"}, {"langue": "Anglais", "lang": "en"}], "en": [{"langue": "French", "lang": "fr"}, {"langue": "English", "lang": "en"}]}
     },
     watch: {
       typemsg: function() {
         localStorage.typemsg = this.typemsg;
+      },
+      lang: function(){
+        for (i = 0; i < this.langues[this.lang].length; i++){
+          if (this.langues[this.lang][i]["lang"] == this.lang)
+            this.langue = this.langues[this.lang][i]["langue"]
+        }
       }
     },
     methods: {
@@ -28,7 +40,7 @@ new Vue({
         this.conv[dest].push({"msg": text, "user": "user"});
         message = '<div class="col-message-sent"><div class="message-sent"><p>'+text+'</p></div></div>';
         this.addhtmlmsg(dest, message);
-        this.sendmsgdest(dest, message);
+        this.sendmsgdest(dest, text);
       },
       addhtmlmsg: function(dest, html) {
         if (this.rawMessages[dest] == void 0)
@@ -37,26 +49,31 @@ new Vue({
         this.update();
         this.$nextTick(function () {this.scrolldown()});
       },
-      sendmsgdest: function() {
-        var data = JSON.stringify({
-          "token": "47609f83e45043e4b0104f856d7413a7_-0.7_1",
-          "sentence": "je me sens mieux",
-          "lang": "fr",
-          "bearer": "2f5583ceb8904df4a35d434a139709b2"
-        });
-
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-
-        xhr.addEventListener("readystatechange", function () {
-          if (this.readyState === 4) {
-            console.log(this.responseText);
-          }
-        });
-
-        xhr.open("POST", "http://localhost:5000/talk/");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(data);
+      sendmsgdest: function(dest, text) {
+        if (this.users[dest] == void 0)
+          return;
+        if (this.users[dest]["func"] == "bot")
+          this.callbot(dest, text, this.currentDest["bearer"])
+      },
+      callbot: function(dest, text, bearer){
+        this.ajaxRequest = true;
+        data = {
+          "token": this.token,
+          "sentence": text,
+          "lang": this.lang,
+          "bearer": bearer
+        }
+        url = "http://localhost:5000/talk/"
+        axios.post(url, data)
+             .then(response => {this.formatbotresp(dest, response)})
+             .catch(error => console.log(error));
+      },
+      formatbotresp: function(dest, response){
+        if (response.data.status != 200)
+          return;
+        text = response.data.data.response
+        this.token = response.data.data.user.token
+        this.adddestmsg(dest, text)
       },
       switchdest: function(dest) {
         if (this.users[dest] == void 0)
@@ -75,12 +92,12 @@ new Vue({
       },
       sendmsg: function() {
         this.addusermsg(this.currentDest.psd, this.typemsg);
+        console.log(this.typemsg)
         this.typemsg = "";
       },
       scrolldown: function() {
         var container = this.$refs.chat;
         container.scrollTop = container.scrollHeight;
-        console.log("lol");
       }
     },
     mounted(){
@@ -92,7 +109,7 @@ new Vue({
           this.$refs.input.focus()
         this.switchdest("bot")
       } else {
-        this.adddestmsg("bot", "Hello, je suis un Chatbot fait pour vous assister dans votre apprentissage n'hesitez pas à me poser des questions");
+        this.sendmsgdest("bot", "bonjour");
         this.switchdest("bot")
       }
 

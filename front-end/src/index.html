@@ -44,7 +44,19 @@
             <div class="col-right right-second">
 
                 <div class="col-content">
-
+                  <div class="nav-wrapper">
+                    <div class="sl-nav">
+                      Language:
+                      <ul>
+                        <li><b>{{langue}}</b> <i class="fa fa-angle-down" aria-hidden="true"></i>
+                          <div class="triangle"></div>
+                          <ul>
+                            <li v-for="l in langues[lang]" v-on:click="lang = l['lang']"><i class="sl-flag" v-bind:class="'flag-' + l['lang']"><div v-bind:id="l['lang']"></div></i> <span>{{l["langue"]}}</span></li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                    </div>
                     <div class="user-panel">
 
                         <div class="avatar">
@@ -75,6 +87,7 @@
             </div>
         </main>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="./js/app.js"></script>
 </body>
