@@ -92,7 +92,6 @@ new Vue({
       },
       sendmsg: function() {
         this.addusermsg(this.currentDest.psd, this.typemsg);
-        console.log(this.typemsg)
         this.typemsg = "";
       },
       scrolldown: function() {
