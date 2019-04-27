@@ -5,6 +5,8 @@ from dialogflow import dialogflowapi
 from analyse import sentiment
 import os
 
+app = Bottle()
+
 @app.hook('after_request')
 def enable_cors():
     """
@@ -16,8 +18,8 @@ def enable_cors():
     response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
 """route to test if api is up"""
-@get('/test/')
-@post('/test/')
+@app.get('/test/')
+@app.post('/test/')
 def base():
     try:
         params = check.json(request)
@@ -26,8 +28,8 @@ def base():
     toret = ret(request.route.rule, params)
     return toret.ret()
 
-@post('/talk/')
-@get('/talk/')
+@app.post('/talk/')
+@app.get('/talk/')
 def base():
     if request.method == 'OPTIONS':
         return {}
