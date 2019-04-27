@@ -65,6 +65,6 @@ def base():
 
 if __name__ == '__main__':
         try:
-            run(host='0.0.0.0', port=8080)
+            run(app, host='0.0.0.0', port=8080)
         except:
             os._exit(0)
