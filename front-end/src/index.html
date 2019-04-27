@@ -46,7 +46,7 @@
                 <div class="col-content">
                   <div class="nav-wrapper">
                     <div class="sl-nav">
-                      Language:
+                      {{ {"fr" : "Langue", "en" : "Language"}[lang] }} :
                       <ul>
                         <li><b>{{langue}}</b> <i class="fa fa-angle-down" aria-hidden="true"></i>
                           <div class="triangle"></div>
@@ -80,6 +80,20 @@
                             <h3>{{ user.name }}</h3>
                             <p>{{ user.desc }}</p>
                         </li>
+                        <li v-if="sent_api_on" class="sent">
+                          <div class="avatar">
+                              <div class="avatar-image">
+                                  <img v-bind:style="'background-color:' + (humeur < 30 ? '#cc0000' : humeur < 60 ? '#ffcc00': '#009900')">
+                              </div>
+                          </div>
+                          <h3>{{ youre[lang][0] }}{{ humeurs[lang][0][(humeur < 30 ? 0 : humeur < 60 ? 1: 2)] }}</h3>
+                          <p>{{ {"fr": "Votre humeur est évalué à ", "en": "Your mood is rated at "}[lang] }}{{ humeur | float2 }}/100</p>
+                          <p v-if="lastscore != -1" >{{ youre[lang][1] }}{{ humeurs[lang][1][(lastscore < 30 ? 0 : lastscore < 60 ? 1: 2)] }}</p>
+
+                        </li>
+                        <li class="dest reset" v-on:click="reset()">
+                          <h3>RESET</h3>
+                        <li>
                    </div>
 
                 </div>

@@ -13,7 +13,12 @@ new Vue({
        token: '',
        lang: "fr",
        langue: "Francais",
-       langues: {"fr": [{"langue": "Francais", "lang": "fr"}, {"langue": "Anglais", "lang": "en"}], "en": [{"langue": "French", "lang": "fr"}, {"langue": "English", "lang": "en"}]}
+       langues: {"fr": [{"langue": "Francais", "lang": "fr"}, {"langue": "Anglais", "lang": "en"}], "en": [{"langue": "French", "lang": "fr"}, {"langue": "English", "lang": "en"}]},
+       humeurs: {"fr": [["Négative", "Neutre", "Positive"], ["Négatif", "Neutre", "Positif"]], "en": [["Negative", "Neutral", "Positive"], ["Negative", "Neutral", "Positive"]]},
+       youre: {"fr": ["La conversation est pour le moment: ", "Votre dernier message était :"], "en": ["The conversation is for the moment : ", "Your last message was:"]},
+       humeur: 50,
+       lastscore: 50,
+       sent_api_on: false,
     },
     watch: {
       typemsg: function() {
@@ -24,6 +29,11 @@ new Vue({
           if (this.langues[this.lang][i]["lang"] == this.lang)
             this.langue = this.langues[this.lang][i]["langue"]
         }
+      }
+    },
+    filters: {
+      float2: function(number){
+        return number.toFixed(0)
       }
     },
     methods: {
@@ -63,7 +73,7 @@ new Vue({
           "lang": this.lang,
           "bearer": bearer
         }
-        url = "https://eliotctl.fr/api/dialogflowmessenger/talk/"
+        url = "http://localhost:5000/talk/"
         axios.post(url, data)
              .then(response => {this.formatbotresp(dest, response)})
              .catch(error => console.log(error));
@@ -72,6 +82,13 @@ new Vue({
         if (response.data.status != 200)
           return;
         text = response.data.data.response
+        if (response.data.data.user.score != void 0) {
+          this.humeur = (response.data.data.user.score + 1) * 50
+          this.lastscore = (response.data.data.score + 1 ) * 50
+          this.sent_api_on = true
+        } else {
+          this.sent_api_on = false
+        }
         this.token = response.data.data.user.token
         this.adddestmsg(dest, text)
       },
@@ -88,7 +105,27 @@ new Vue({
         localStorage.currentDest = JSON.stringify(this.currentDest);
         localStorage.rawMessages = JSON.stringify(this.rawMessages);
         localStorage.typemsg = this.typemsg;
+        localStorage.token = this.token;
+        localStorage.lang = this.lang;
         localStorage.history = true;
+      },
+      loadtoken: function(token){
+        this.token = token;
+        token = token.split("_");
+        if (token[1])
+          this.humeur = (parseFloat(token[1]) + 1) * 50
+        else {
+          this.humeur = 50
+        }
+        this.lastscore = -1
+      },
+      reset: function(){
+        this.rawMessages = {}
+        this.token = ""
+        this.update();
+        this.loadtoken(localStorage.token);
+        this.adddestmsg("bottest", "Bonjour ! Je suis la pour tester ce système, tu peux me parler de tout et de rien");
+        this.adddestmsg("bot", "Salut ! Je suis la pour t’assister dans ton apprentissage de DialogFlow, n’hésite pas a me poser des questions");
       },
       sendmsg: function() {
         this.addusermsg(this.currentDest.psd, this.typemsg);
@@ -104,6 +141,9 @@ new Vue({
         this.rawMessages = JSON.parse(localStorage.rawMessages);
         this.currentDest = JSON.parse(localStorage.currentDest);
         this.typemsg = localStorage.typemsg;
+        this.sent_api_on = true;
+        this.lang = localStorage.lang;
+        this.loadtoken(localStorage.token);
         if (this.typemsg != "")
           this.$refs.input.focus()
         this.switchdest("bot")
