@@ -1,4 +1,4 @@
-from bottle import run, route, get, post, response, request, hook
+from bottle import Bottle, run, route, get, post, response, request, hook
 from returnvalue import ret
 from params import check
 from dialogflow import dialogflowapi
