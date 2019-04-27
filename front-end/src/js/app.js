@@ -27,7 +27,8 @@ new Vue({
       lang: function(){
         for (i = 0; i < this.langues[this.lang].length; i++){
           if (this.langues[this.lang][i]["lang"] == this.lang)
-            this.langue = this.langues[this.lang][i]["langue"]
+            this.langue = this.langues[this.lang][i]["langue"];
+            this.update();
         }
       }
     },
