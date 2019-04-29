@@ -4,7 +4,7 @@ import urllib
 import uuid
 
 class sentiment:
-    def __init__(self, token, lang):
+    def __init__(self, token = None, lang = None):
         self.lang = lang
         self.token = token
 
@@ -12,6 +12,13 @@ class sentiment:
         ret = self.__query(self.lang, sentence)
         return ret
 
+    def checktoken(self, tok):
+        if tok is None or len(tok.split('_')) is not 3:
+            id = str(uuid.uuid4()).replace('-', '')
+            token = "token" : id + "_0.0_0"
+        else:
+            token = tok
+        return {"user":{"token" : token}}
 
     def __query(self, lang, query):
         url = "http://dialogflow_sentiment_api:8080/sentence/"

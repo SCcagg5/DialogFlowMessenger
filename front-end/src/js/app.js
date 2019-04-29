@@ -38,48 +38,43 @@ new Vue({
       }
     },
     methods: {
-      adddestmsg: function(dest, text){
-        if (this.conv[dest] == void 0)
-          this.conv[dest] = [];
-        this.conv[dest].push({"msg": text, "user": "dest"});
+      adddestmsg: function(dest, text, lang){
+        this.conv[dest][lang].push({"msg": text, "user": "dest"});
         message = '<div class="col-message-received"><div class="message-received"><p>'+text+'</p></div></div>'
-        this.addhtmlmsg(dest, message);
+        this.addhtmlmsg(dest, message, lang);
       },
       addusermsg: function(dest, text){
-        if (this.conv[dest] == void 0)
-          this.conv[dest] = [];
         this.conv[dest].push({"msg": text, "user": "user"});
         message = '<div class="col-message-sent"><div class="message-sent"><p>'+text+'</p></div></div>';
-        this.addhtmlmsg(dest, message);
-        this.sendmsgdest(dest, text);
+        this.addhtmlmsg(dest, message, this.lang);
+        this.sendmsgdest(dest, text, this.lang);
       },
-      addhtmlmsg: function(dest, html) {
-        if (this.rawMessages[dest] == void 0)
-          this.rawMessages[dest] = '';
-        this.rawMessages[dest] += html;
+      addhtmlmsg: function(dest, html, lang) {
+        this.rawMessages[dest][lang] += html;
         this.update();
         this.$nextTick(function () {this.scrolldown()});
       },
-      sendmsgdest: function(dest, text) {
+      sendmsgdest: function(dest, text, lang) {
         if (this.users[dest] == void 0)
           return;
         if (this.users[dest]["func"] == "bot")
-          this.callbot(dest, text, this.currentDest["bearer"])
+          this.callbot(dest, text, this.currentDest["bearer"], lang)
       },
-      callbot: function(dest, text, bearer){
+      callbot: function(dest, text, bearer, lang, analysis){
         this.ajaxRequest = true;
         data = {
           "token": this.token,
           "sentence": text,
-          "lang": this.lang,
-          "bearer": bearer
+          "lang": lang,
+          "bearer": bearer,
+          "analysis": analysis
         }
         url = "https://eliotctl.fr/api/dialogflowmessenger/talk/"
         axios.post(url, data)
-             .then(response => {this.formatbotresp(dest, response)})
+             .then(response => {this.formatbotresp(dest, response, lang)})
              .catch(error => console.log(error));
       },
-      formatbotresp: function(dest, response){
+      formatbotresp: function(dest, response, lang){
         if (response.data.status != 200)
           return;
         text = response.data.data.response
@@ -90,19 +85,28 @@ new Vue({
         } else {
           this.sent_api_on = false
         }
-        this.token = response.data.data.user.token
-        this.adddestmsg(dest, text)
+        this.token = response.data.data.user.token;
+        this.adddestmsg(dest, text, lang);
       },
       switchdest: function(dest) {
         if (this.users[dest] == void 0)
           return;
-        if (this.rawMessages[dest] == void 0)
-          this.rawMessages[dest] = '';
         this.currentDest = this.users[dest];
         this.update();
       },
       update: function() {
-        this.print = this.rawMessages[this.currentDest.psd];
+        this.setupConv(false);
+        dest = this.currentDest.psd
+        if (this.rawMessages[dest] != void 0){
+          this.print = this.rawMessages[dest][this.lang];
+          if (this.users[dest]["func"] != "bot" && !this.users[dest]["online"])
+            if (this.print.trim() == '')
+              this.print = '<div class="wrapper-mobile" style="display: block; height: 100%"><div class="mobile"><img src="./img/lone-logo.svg">Not available</div></div>'
+          }
+        else {
+          this.print = '';
+          console.log(dest, this.users[dest]["func"], this.users[dest]["online"])
+        }
         localStorage.currentDest = JSON.stringify(this.currentDest);
         localStorage.rawMessages = JSON.stringify(this.rawMessages);
         localStorage.typemsg = this.typemsg;
@@ -121,20 +125,42 @@ new Vue({
         this.lastscore = -1
       },
       reset: function(){
-        this.rawMessages = {}
-        this.token = ""
+        this.token = "";
+        this.setupConv(true);
         this.update();
         this.loadtoken(localStorage.token);
-        this.adddestmsg("bottest", "Bonjour ! Je suis la pour tester ce système, tu peux me parler de tout et de rien");
-        this.adddestmsg("bot", "Salut ! Je suis la pour t’assister dans ton apprentissage de DialogFlow, n’hésite pas a me poser des questions");
+        this.callBots();
       },
       sendmsg: function() {
-        this.addusermsg(this.currentDest.psd, this.typemsg);
+        if (this.typemsg.trim().length != 0)
+          this.addusermsg(this.currentDest.psd, this.typemsg, this.lang);
         this.typemsg = "";
       },
       scrolldown: function() {
         var container = this.$refs.chat;
         container.scrollTop = container.scrollHeight;
+      },
+      setupConv: function(fullreset) {
+        for (var dest in this.users){
+          if (this.rawMessages[dest] == void 0 || fullreset) {
+            this.rawMessages[dest] = {};
+            for (var lang in this.langues)
+              this.rawMessages[dest][lang] = '';
+          }
+          if (this.conv[dest] == void 0 || fullreset) {
+            this.conv[dest] = [];
+            for (var lang in this.langues)
+              this.conv[dest][lang] = [];
+          }
+        }
+      },
+      callBots: function() {
+        for(var dest in this.users)
+          if (this.users[dest]["func"] == "bot")
+            for (var lang in this.langues) {
+              this.callbot(dest, "hello", this.users[dest]["bearer"], lang, false);
+              console.log(dest, "hello", this.users[dest]["bearer"], lang, false);
+            }
       }
     },
     mounted(){
@@ -147,11 +173,11 @@ new Vue({
         this.loadtoken(localStorage.token);
         if (this.typemsg != "")
             this.$refs.input.focus();
-	  this.print = this.rawMessages[this.currentDest.psd];
+        this.switchdest(this.currentDest.psd);
       } else {
-        this.adddestmsg("bottest", "Bonjour ! Je suis la pour tester ce système, tu peux me parler de tout et de rien");
-        this.adddestmsg("bot", "Salut ! Je suis la pour t’assister dans ton apprentissage de DialogFlow, n’hésite pas a me poser des questions");
-        this.switchdest("bot")
+        this.setupConv(true);
+        this.switchdest("bot");
+        this.callBots();
       }
 
     }
