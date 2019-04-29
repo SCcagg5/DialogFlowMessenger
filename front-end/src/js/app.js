@@ -69,7 +69,7 @@ new Vue({
           "bearer": bearer,
           "analysis": analysis
         }
-        url = "https://eliotctl.fr/api/dialogflowmessenger/talk/"
+        url = "http://localhost:5000/talk/"
         axios.post(url, data)
              .then(response => {this.formatbotresp(dest, response, lang)})
              .catch(error => console.log(error));
