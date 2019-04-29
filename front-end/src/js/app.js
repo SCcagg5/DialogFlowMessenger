@@ -105,7 +105,6 @@ new Vue({
           }
         else {
           this.print = '';
-          console.log(dest, this.users[dest]["func"], this.users[dest]["online"])
         }
         localStorage.currentDest = JSON.stringify(this.currentDest);
         localStorage.rawMessages = JSON.stringify(this.rawMessages);
@@ -159,7 +158,6 @@ new Vue({
           if (this.users[dest]["func"] == "bot")
             for (var lang in this.langues) {
               this.callbot(dest, "hello", this.users[dest]["bearer"], lang, false);
-              console.log(dest, "hello", this.users[dest]["bearer"], lang, false);
             }
       }
     },
