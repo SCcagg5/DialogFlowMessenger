@@ -58,8 +58,9 @@ new Vue({
       sendmsgdest: function(dest, text, lang) {
         if (this.users[dest] == void 0)
           return;
-        if (this.users[dest]["func"] == "bot" && !this.users[dest]["online"])
-          this.callbot(dest, text, this.currentDest["bearer"], lang);
+        if (this.users[dest]["online"])
+            if (this.users[dest]["func"] == "bot")
+               this.callbot(dest, text, this.currentDest["bearer"], lang);
         else
           this.adddestmsg(dest, this.no_av[lang], lang);
       },
