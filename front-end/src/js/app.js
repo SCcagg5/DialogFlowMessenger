@@ -16,6 +16,7 @@ new Vue({
        langues: {"fr": [{"langue": "Francais", "lang": "fr"}, {"langue": "Anglais", "lang": "en"}], "en": [{"langue": "French", "lang": "fr"}, {"langue": "English", "lang": "en"}]},
        humeurs: {"fr": [["Négative", "Neutre", "Positive"], ["Négatif", "Neutre", "Positif"]], "en": [["Negative", "Neutral", "Positive"], ["Negative", "Neutral", "Positive"]]},
        youre: {"fr": ["La conversation est pour le moment: ", "Votre dernier message était :"], "en": ["The conversation is for the moment : ", "Your last message was:"]},
+       no_av: {"fr": "Désolé, je ne suis pas disponible pour le moment", "en": "Sorry, I'm not available for the moment"},
        humeur: 50,
        lastscore: 50,
        sent_api_on: false,
@@ -57,8 +58,10 @@ new Vue({
       sendmsgdest: function(dest, text, lang) {
         if (this.users[dest] == void 0)
           return;
-        if (this.users[dest]["func"] == "bot")
-          this.callbot(dest, text, this.currentDest["bearer"], lang)
+        if (this.users[dest]["func"] == "bot" && !this.users[dest]["online"])
+          this.callbot(dest, text, this.currentDest["bearer"], lang);
+        else
+          this.adddestmsg(dest, this.no_av[lang], lang);
       },
       callbot: function(dest, text, bearer, lang, analysis){
         this.ajaxRequest = true;
