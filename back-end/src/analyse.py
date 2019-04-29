@@ -15,7 +15,7 @@ class sentiment:
     def checktoken(self, tok):
         if tok is None or len(tok.split('_')) is not 3:
             id = str(uuid.uuid4()).replace('-', '')
-            token = "token" : id + "_0.0_0"
+            token = id + "_0.0_0"
         else:
             token = tok
         return {"user":{"token" : token}}
