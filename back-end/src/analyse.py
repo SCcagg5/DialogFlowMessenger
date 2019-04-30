@@ -18,7 +18,7 @@ class sentiment:
             token = id + "_0.0_0"
         else:
             token = tok
-        return {"user":{"token" : token}}
+        return [True, {"user":{"token" : token}}, 200]
 
     def __query(self, lang, query):
         url = "http://dialogflow_sentiment_api:8080/sentence/"
