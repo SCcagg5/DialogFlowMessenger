@@ -58,11 +58,13 @@ new Vue({
       sendmsgdest: function(dest, text, lang) {
         if (this.users[dest] == void 0)
           return;
-        if (this.users[dest]["online"])
+        console.log(this.users[dest]["online"] == true);
+        if (this.users[dest]["online"] == true){
             if (this.users[dest]["func"] == "bot")
                this.callbot(dest, text, this.currentDest["bearer"], lang);
-        else
+        }else {
           this.adddestmsg(dest, this.no_av[lang], lang);
+        }
       },
       callbot: function(dest, text, bearer, lang, analysis){
         this.ajaxRequest = true;
@@ -75,10 +77,11 @@ new Vue({
         }
         url = "http://localhost:5000/talk/"
         axios.post(url, data)
-             .then(response => {this.formatbotresp(dest, response, lang)})
+             .then(response => {this.formatbotresp(dest, response, lang, analysis)})
              .catch(error => console.log(error));
       },
-      formatbotresp: function(dest, response, lang){
+      formatbotresp: function(dest, response, lang, a){
+        console.log(response.data, a)
         if (response.data.status != 200)
           return;
         text = response.data.data.response
@@ -103,10 +106,11 @@ new Vue({
         dest = this.currentDest.psd
         if (this.rawMessages[dest] != void 0){
           this.print = this.rawMessages[dest][this.lang];
-          if (this.users[dest]["func"] != "bot" && !this.users[dest]["online"])
+          if (this.users[dest]["func"] != "bot" && !this.users[dest]["online"]) {
             if (this.print.trim() == '')
-              this.print = '<div class="wrapper-mobile" style="display: block; height: 100%"><div class="mobile"><img src="./img/lone-logo.svg">Not available</div></div>'
+            this.print += '<div class="wrapper-mobile" style="display: block; height: 100%; position: static;"><div class="mobile"><img src="./img/lone-logo.svg">'+this.no_av[this.lang]+'</div></div>'
           }
+        }
         else {
           this.print = '';
         }
