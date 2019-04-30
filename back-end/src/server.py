@@ -50,7 +50,7 @@ def base():
                 err = sent.talk(params["sentence"])
             else:
                 err = sent.getnewtoken()
-        excxept:
+        except:
             err = sent.talk(params["sentence"])
         if not err[0]:
             toret.add_error(err[1], err[2])
