@@ -58,7 +58,6 @@ new Vue({
       sendmsgdest: function(dest, text, lang) {
         if (this.users[dest] == void 0)
           return;
-        console.log(this.users[dest]["online"] == true);
         if (this.users[dest]["online"] == true){
             if (this.users[dest]["func"] == "bot")
                this.callbot(dest, text, this.currentDest["bearer"], lang);
@@ -81,7 +80,6 @@ new Vue({
              .catch(error => console.log(error));
       },
       formatbotresp: function(dest, response, lang, a){
-        console.log(response.data, a)
         if (response.data.status != 200)
           return;
         text = response.data.data.response
