@@ -44,7 +44,7 @@ def base():
 
     if not toret.err:
         sent = sentiment(params["token"], params["lang"])
-        if "analysis" not in params or not params["analysis"]:
+        if "analysis" not in params or params["analysis"] == False:
             err = sent.checktoken(params["token"])
         else:
             err = sent.talk(params["sentence"])
