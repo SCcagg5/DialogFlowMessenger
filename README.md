@@ -1,5 +1,7 @@
 # Messenger like & DialogFlow app ( w/ sentiment analysis)
----
+
+[![CodeFactor](https://www.codefactor.io/repository/github/sccagg5/dialogflowmessenger/badge)](https://www.codefactor.io/repository/github/sccagg5/dialogflowmessenger)
+[![codebeat badge](https://codebeat.co/badges/861fa6b1-def4-4b0f-98b4-79977d84bf33)](https://codebeat.co/projects/github-com-sccagg5-dialogflowmessenger-master)
 
 # The App:
 To launch the app use: `docker-compose up -d --build` from inside the git directory
