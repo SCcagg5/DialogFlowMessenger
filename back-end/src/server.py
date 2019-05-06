@@ -17,7 +17,6 @@ def enable_cors():
     response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
     response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
-"""route to test if api is up"""
 @app.get('/test/')
 @app.post('/test/')
 def base():
@@ -45,7 +44,7 @@ def base():
 
     if not toret.err:
         sent = sentiment(params["token"], params["lang"])
-        if "analysis" not in params or params["analysis"] == False:
+        if "analysis" not in params or not params["analysis"]:
             err = sent.checktoken(params["token"])
         else:
             err = sent.talk(params["sentence"])
