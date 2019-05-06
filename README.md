@@ -26,7 +26,7 @@ To launch the app use: `docker-compose up -d --build` from inside the git direct
 Route| Method| Content Type |Parameters| Description |
 :-|:-:|:-:|:-:|:-|
 /test/ | POST, GET |  |  | return an empty response pattern
-/talk/ | POST | JSON | sentence, lang, token, bearer | return response of the dialogflow app selected by bearer
+/talk/ | POST | JSON | sentence, lang, token, bearer, analysis | return response of the dialogflow app selected by bearer
 
 ### Parameters:
 ```javascript
@@ -35,6 +35,7 @@ Route| Method| Content Type |Parameters| Description |
   "lang": "YOUR_LANG", // ["fr", "en"]
   "token": "USER'S TOKEN" //if NULL the app return a new one,
   "bearer" : "*YOUR_DIALOGFLOW_BEARER*",
+  "analysis": True / False // enable/disable sentiment analysis
 }
 ```
 
