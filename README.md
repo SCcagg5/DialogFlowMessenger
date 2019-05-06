@@ -7,7 +7,7 @@
 To launch the app use: `docker-compose up -d --build` from inside the git directory
 
  * _This app include sentiments analysis through https://github.com/SCcagg5/DialogFlowSentimentAnalyser 's API see More_
- * _test_
+ * _Exemple at http://eliotctl.fr/DialogFlowMessenger/_
 
 ### Tech :
  
