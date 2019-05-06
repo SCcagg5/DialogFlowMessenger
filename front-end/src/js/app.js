@@ -60,7 +60,7 @@ new Vue({
           return;
         if (this.users[dest]["online"] == true){
             if (this.users[dest]["func"] == "bot")
-               this.callbot(dest, text, this.currentDest["bearer"], lang);
+               this.callbot(dest, text, this.currentDest["bearer"], lang, true);
         }else {
           this.adddestmsg(dest, this.no_av[lang], lang);
         }
