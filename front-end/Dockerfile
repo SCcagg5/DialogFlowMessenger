@@ -12,4 +12,4 @@ RUN mkdir /home/front
 ENTRYPOINT cd /home/front/ && \
 	   if [ "$PROD" -eq 1 ];then mkdir prod; cd prod; git clone --quiet https://github.com/SCcagg5/DialogFlowMessenger > /dev/null; fi && \
 	   cd ./DialogFlowMessenger/front-end/src && \
-	   http-server ./ && /bin/bash
+	   http-server -c31536000 ./ && /bin/bash
