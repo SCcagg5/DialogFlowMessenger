@@ -15,7 +15,7 @@ To launch the app use: `docker-compose up -d --build` from inside the git direct
 ### Tech :
  
   * **APP**: Docker
-  * **FRONT**: /
+  * **FRONT**: vuejs
   * **END**: Python3
   
   
@@ -44,6 +44,26 @@ Route| Method| Content Type |Parameters| Description |
 **Warning**: 
   * the `token` parameter is changed every new call **if Sentiments's API is enabled**
   * the first part (before the `_`) should'nt change, if it does change report bug
+# Front end:
+
+
+### Setup:
+
+In the `app.js` file you'll have to modify the users array: 
+
+```javascript
+"bot": { //name
+  "online": true, //online state 
+  "img": "./img/avatar.png",  //image of the user
+  "name": "DialogFlow Helper",  // displayed name
+  "desc": "Here to help you !",  //short description under the user
+  "psd": "bot",  //name
+  "func": "bot", //['bot', 'human'] 
+  "bearer": "580132fb72ca4f7d85d41fbd63f2f498" //dialogflow bearer
+}
+```
+
+WARN: your dialogflow should have an `en` and `fr` version
 
 ### Launching the App:  
 
