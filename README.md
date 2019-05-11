@@ -78,7 +78,7 @@ To enable sentiment analysis:
 
 * _`git clone https://github.com/SCcagg5/DialogFlowMessenger`_
 * _`git clone https://github.com/SCcagg5/DialogFlowSentimentAnalyser`_
-* _`cp ./DialogFlowMessenger/docker-compose_enbl_sent.yml ./docker-compose.yml`_
+* _`cp ./DialogFlowMessenger/docker-compose_full.yml ./docker-compose.yml`_
 * _store your `GOOGLE_APPLICATION_CREDENTIALS.json` inside DialogFlowSentimentAnalyser's directory_
 * _`docker-compose up -d --build`_
 
